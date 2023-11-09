@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, file_names, sized_box_for_whitespace, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:todoapp/colors.dart';
+import 'package:todoapp/view/init/colors.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
