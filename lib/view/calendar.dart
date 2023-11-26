@@ -29,13 +29,11 @@ class _calendarState extends State<calendar> {
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
               color: Color.fromARGB(255, 60, 60, 60),
-              borderRadius: BorderRadius.circular(50)),
-          margin: EdgeInsets.symmetric(vertical: 30, horizontal: 120),
-          height: 60,
-          width: double.infinity,
+              borderRadius: BorderRadius.circular(20)),
+          margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // home
               Container(
@@ -59,26 +57,18 @@ class _calendarState extends State<calendar> {
                   ),
                 ),
               ),
-              // add task
-              Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: pirble,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+              FloatingActionButton(
+                backgroundColor: pirble,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
                       builder: (context) => AddTask(),
-                    ));
-                  },
-                  child: Icon(
-                    Icons.add,
-                    color: wite,
-                  ),
-                ),
-              ), //
+                    ),
+                  );
+                },
+                child: Icon(Icons.add),
+              ),
+              // add task
               //  calendar
               Container(
                 height: 40,
