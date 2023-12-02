@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, unused_local_variable, unnecessary_brace_in_string_interps, unused_element, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, unused_local_variable, unnecessary_brace_in_string_interps, unused_element, avoid_print, prefer_final_fields, unused_field
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:todoapp/model/task.dart';
 import 'package:todoapp/view/add_task.dart';
 import 'package:todoapp/view/calendar.dart';
 import 'package:todoapp/view/init/colors.dart';
@@ -16,6 +17,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late final Box box;
+  bool? _ischecked = false;
+
+  void changevalueofbox(bool? NewVaule) {
+    setState(() {
+      _ischecked = NewVaule;
+    });
+  }
 
   _deleteInfo(int index) {
     box.deleteAt(index);
@@ -103,22 +111,45 @@ class _HomeState extends State<Home> {
                 // search bar
                 Container(
                   margin: EdgeInsets.all(10),
-                  child: TextField(
-                    style: TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40),
-                        borderSide: BorderSide.none,
-                      ),
-                      hintText: "Search Task",
-                      hintStyle: TextStyle(color: Colors.white),
-                      prefixIcon: Icon(Icons.search),
-                      prefixIconColor: Colors.white,
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 60, 60, 60),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: const Color.fromARGB(53, 255, 255, 255),
+                  ),
+                  child: MaterialButton(
+                    onPressed: () {
+                      showSearch(
+                        query: '',
+                        context: context,
+                        delegate: MainSearch(),
+                      );
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.spa,
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: 30.3,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Search Task",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  width: double.infinity,
                 ),
                 // TASKS FOR TODAY title
                 Padding(
@@ -234,7 +265,7 @@ class _HomeState extends State<Home> {
                 // tasks view
                 Container(
                   margin: EdgeInsets.all(10),
-                  height: 350,
+                  height: 450,
                   width: double.infinity,
                   child: ValueListenableBuilder(
                     valueListenable: box.listenable(),
@@ -264,20 +295,29 @@ class _HomeState extends State<Home> {
                               ),
                               child: ListTile(
                                 contentPadding: EdgeInsets.all(10),
-                                textColor: Colors.white,
                                 title: Text(
                                   task_data.title,
                                   style: TextStyle(
-                                    fontSize: 20,
-                                  ),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                                 subtitle: Row(
                                   children: [
                                     Text(
                                       task_data.descreption,
-                                      style: TextStyle(fontSize: 15),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
                                     )
                                   ],
+                                ),
+                                leading: Checkbox(
+                                  // tristate: true,
+                                  onChanged: (newvalue) =>
+                                      changevalueofbox(newvalue),
+                                  value: _ischecked,
                                 ),
                                 trailing: IconButton(
                                   onPressed: () {
@@ -342,7 +382,7 @@ class _HomeState extends State<Home> {
                   ),
                 );
               },
-              child: Icon(Icons.add),
+              child: Icon(Icons.add, color: Colors.white),
             ),
             // add task
             //  calendar
@@ -373,3 +413,97 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+class MainSearch extends SearchDelegate {
+  Box box = Hive.box('TasksBox');
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    if (query != '') {
+      return [
+        IconButton(
+          color: pirble,
+          onPressed: () {
+            query = '';
+          },
+          icon: Icon(Icons.close),
+        ),
+      ];
+    }
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, null) ; 
+      },
+      icon: Icon(
+        Icons.arrow_back,
+        color: pirble,
+      ),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: box.listenable(),
+        builder: (context, value, child) {
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              var currerntbox = box;
+              var task_data = currerntbox.getAt(index);
+              if (query == task_data.title) {
+                return ListTile(
+                  leading: Icon(Icons.task),
+                  title: Text(task_data.title),
+                  subtitle: Text(task_data.descreption),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                );
+              } else {
+                return Text('');
+              }
+            },
+            itemCount: box.length,
+          );
+        });
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: box.listenable(),
+      builder: (context, value, child) {
+        return Center(
+          child: Text(
+            "No Data ",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: pirble,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// child: TextFormField(
+//   style: TextStyle(color: Colors.white),
+//   cursorColor: Colors.white,
+//   decoration: InputDecoration(
+//     border: OutlineInputBorder(
+//       borderRadius: BorderRadius.circular(40),
+//       borderSide: BorderSide.none,
+//     ),
+//     hintText: "Search Task",
+//     hintStyle: TextStyle(color: Colors.white),
+//     prefixIcon: Icon(Icons.search),
+//     prefixIconColor: Colors.white,
+//     filled: true,
+//     fillColor: const Color.fromARGB(255, 60, 60, 60),
+//   ),
+// ),

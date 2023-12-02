@@ -5,11 +5,12 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:todoapp/model/task.dart';
 import './view/home.dart';
 
+
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
   await Hive.openBox('TasksBox');
-  runApp(const MyApp());
+  runApp(const MyApp()) ;
 }
 
 class MyApp extends StatefulWidget {
@@ -20,6 +21,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   void dispose() {
     // TODO: implement dispose

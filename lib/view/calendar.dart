@@ -66,7 +66,7 @@ class _calendarState extends State<calendar> {
                     ),
                   );
                 },
-                child: Icon(Icons.add),
+                child: Icon(Icons.add , color: Colors.white,),
               ),
               // add task
               //  calendar
