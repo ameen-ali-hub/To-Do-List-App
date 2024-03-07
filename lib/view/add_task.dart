@@ -78,9 +78,9 @@ class _AddTaskState extends State<AddTask> {
         height: 50,
       ),
       appBar: AppBar(
-        title: Text(
+        title: Text(  
           "Add Task ",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30 , color: const Color.fromARGB(255, 255, 255, 255)),
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
