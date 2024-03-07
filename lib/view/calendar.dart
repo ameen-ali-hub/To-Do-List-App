@@ -33,28 +33,20 @@ class _calendarState extends State<calendar> {
           margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // home
-              Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  // color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Home(),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.home,
-                    color: wite,
-                  ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Home(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.home,
+                  size: 30,
+                  color: Colors.white,
                 ),
               ),
               FloatingActionButton(
@@ -66,31 +58,28 @@ class _calendarState extends State<calendar> {
                     ),
                   );
                 },
-                child: Icon(Icons.add , color: Colors.white,),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
               // add task
               //  calendar
-              Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  // color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => calendar(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.calendar_month,
+                  size: 30,
+                  color: Colors.white,
                 ),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => calendar(),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.calendar_month,
-                    color: wite,
-                  ),
-                ),
-              ),
+              )
             ],
           ),
         ),
